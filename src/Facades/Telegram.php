@@ -5,7 +5,7 @@ namespace IVal\SiligramBot\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \IVal\SiligramBot\TelegramClient bot(string $nameOrToken)
+ * @method static \IVal\SiligramBot\TelegramClient bot(string $name)
  * @method static string getToken()
  * @method static array sendMessage(int|string $chatId, string $text, array $options = [])
  * @method static array sendPhoto(int|string $chatId, string $photo, ?string $caption = null, array $options = [])

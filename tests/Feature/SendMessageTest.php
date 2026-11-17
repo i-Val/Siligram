@@ -75,6 +75,22 @@ class SendMessageTest extends TestCase
         });
     }
 
+    public function test_it_throws_exception_when_switching_to_unconfigured_bot(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Telegram bot [unconfigured_bot] is not configured');
+
+        Telegram::bot('unconfigured_bot');
+    }
+
+    public function test_it_rejects_passing_raw_token_as_bot_name(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Telegram bot [123456:RAW_TOKEN_IN_CODE] is not configured');
+
+        Telegram::bot('123456:RAW_TOKEN_IN_CODE');
+    }
+
     public function test_it_throws_telegram_api_exception_on_failure(): void
     {
         Http::fake([

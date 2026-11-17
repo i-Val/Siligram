@@ -101,12 +101,14 @@ Telegram::sendMessage($chatId, '*Bold text*', [
 
 ### 2. Multi-Bot Switching
 
+All bot tokens must always be defined in your `.env` file and mapped in `config/telegram.php`. Never hardcode raw bot tokens in your code.
+
 ```php
-// Dispatch via a secondary bot defined in config/telegram.php
+// Dispatch via a secondary bot defined in config/telegram.php (e.g. env('TELEGRAM_ALERTS_BOT_TOKEN'))
 Telegram::bot('alerts')->sendMessage($chatId, '⚠️ High CPU usage detected!');
 
-// Or pass an explicit bot token
-Telegram::bot('987654321:CUSTOM_TOKEN')->sendMessage($chatId, 'Direct message');
+// Dispatch via default bot
+Telegram::bot('default')->sendMessage($chatId, 'Standard notification');
 ```
 
 ### 3. Media & File Uploads

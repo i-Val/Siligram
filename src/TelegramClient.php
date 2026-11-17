@@ -33,15 +33,23 @@ class TelegramClient
     }
 
     /**
-     * Switch bot token using a configured bot name or explicit token.
+     * Switch bot client instance using a configured named bot.
+     *
+     * @param string $name Bot identifier configured in config/telegram.php (e.g. 'default', 'alerts')
+     * @return self
+     * @throws \InvalidArgumentException
      */
-    public function bot(string $nameOrToken): self
+    public function bot(string $name): self
     {
         $bots = $this->config['bots'] ?? config('telegram.bots', []);
 
-        $token = $bots[$nameOrToken] ?? $nameOrToken;
+        if (empty($bots[$name])) {
+            throw new \InvalidArgumentException(
+                "Telegram bot [{$name}] is not configured. Define its token in your .env file and map it in config/telegram.php."
+            );
+        }
 
-        return new self($token, $this->config);
+        return new self($bots[$name], $this->config);
     }
 
     /**
@@ -236,7 +244,9 @@ class TelegramClient
     public function call(string $method, array $payload = []): mixed
     {
         if (empty($this->token)) {
-            throw new TelegramApiException('Telegram Bot token is not configured.');
+            throw new TelegramApiException(
+                'Telegram Bot token is not configured. Please define TELEGRAM_BOT_TOKEN in your .env file.'
+            );
         }
 
         $timeout = $this->config['timeout'] ?? (int) config('telegram.timeout', 10);
